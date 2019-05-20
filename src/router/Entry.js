@@ -22,8 +22,4 @@ const AppRouter: NavContainer = <NavContainer height="32em" pages={values(Pages)
 Context.AppRouter = AppRouter;
 Context.Pages = Pages;
 
-window.onhashchange = () => {
-  AppRouter.back();
-};
-
 export { AppRouter, Pages };
