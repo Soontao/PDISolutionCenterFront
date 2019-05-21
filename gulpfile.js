@@ -114,7 +114,7 @@ gulp.task("bs", () => {
     reloadDelay: 1 * 1000,
     reloadDebounce: 1 * 1000,
     notify: false,
-    startPath: "index.html"
+    startPath: "/"
   });
 });
 
