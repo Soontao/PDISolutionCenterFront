@@ -15,7 +15,7 @@ const createTenantSetupPage = (props: Props): ToolPage => {
   const page: ToolPage = <ToolPage
     header={
       <ToolHeader>
-        <Button press={() => { props.AppRouter.to(props.Pages.HomePage); }}>Back</Button>
+        <Button press={() => { props.AppRouter.back(); }}>Back</Button>
       </ToolHeader>
     }
   />;
