@@ -58,6 +58,8 @@ visual_ext_index.html
 /.user.project.json
 /dist/
 
+dist.zip
+
 # yarn
 
 *yarn*

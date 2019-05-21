@@ -12,12 +12,20 @@
     "start:preload": "node_modules/.bin/gulp dev:preload",
     "build": "node_modules/.bin/gulp build",
     "build:sourcemap": "node_modules/.bin/gulp build:sourcemap",
-    "lint:fix": "node_modules/.bin/eslint --fix \"src/**/*.js\""
+    "lint:fix": "node_modules/.bin/eslint --fix \"src/**/*.js\"",
+    "prepare": "npm run build",
+    "release": "standard-version --commit-all --no-verify && git push --follow-tags origin master",
+    "commitmsg": "commitlint -E HUSKY_GIT_PARAMS",
+    "precommit": "npm run build"
   },
   "dependencies": {
     "lodash": "^4.17.11"
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.0.0",
+    "@commitlint/config-conventional": "^7.0.1",
+    "standard-version": "^4.4.0",
+    "husky": "^1.1.2",
     "@types/openui5": "^1.40.1",
     "@ui5-next/types": "latest",
     "babel-cli": "^6.26.0",
