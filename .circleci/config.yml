@@ -10,8 +10,6 @@ jobs:
 
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/artifacts
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -27,7 +25,8 @@ jobs:
       # save artifacts
       - persist_to_workspace:
           root: ./
-          paths: ./dist.zip
+          paths: 
+            - dist.zip
 
       - save_cache:
           paths:
@@ -51,6 +50,8 @@ workflows:
   main:
     jobs:
       - deploy:
+          requires:
+            - build
           filters:
             tags:
               only: /.*/

@@ -13,7 +13,6 @@
     "build": "node_modules/.bin/gulp build",
     "build:sourcemap": "node_modules/.bin/gulp build:sourcemap",
     "lint:fix": "node_modules/.bin/eslint --fix \"src/**/*.js\"",
-    "prepare": "npm run build",
     "release": "standard-version --commit-all --no-verify && git push --follow-tags origin master",
     "commitmsg": "commitlint -E HUSKY_GIT_PARAMS",
     "precommit": "npm run build"
