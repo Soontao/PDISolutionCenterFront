@@ -1,7 +1,7 @@
 {
   "app": {
     "namespace": "ui5.psc.front",
-    "resource": "https://openui5.hana.ondemand.com/resources/"
+    "resource": "https://openui5.hana.ondemand.com/1.65.1/resources/"
   },
   "name": "PDISolutionCenterFront",
   "version": "1.1.3",
