@@ -1,4 +1,3 @@
-import JSONModel from "sap/ui/model/json/JSONModel";
 import ToolPage from "sap/tnt/ToolPage";
 import ToolHeader from "sap/tnt/ToolHeader";
 import Title from "sap/m/Title";
@@ -9,20 +8,10 @@ import ToolbarSpacer from "sap/m/ToolbarSpacer";
 import VerticalLayout from "sap/ui/layout/VerticalLayout";
 import Icon from "sap/ui/core/Icon";
 import Link from "sap/m/Link";
-import NavContainer from "sap/m/NavContainer";
-import Page from "sap/m/Page";
+import { bindStore, dispatch } from "../../store/Store";
+import { Constants } from "../../constants/Constants";
 
-interface Props {
-  AppRouter: NavContainer;
-  Pages: { [string]: Page };
-}
-
-export const createHomePage = (props: Props): ToolPage => {
-  const state = new JSONModel({
-    title: "PDI Solution Center",
-    welcome: "Welcome to PDI Solution Center ",
-    solutions: "Solutions"
-  });
+const creator = (): ToolPage => {
 
   const iconSize = "3rem";
 
@@ -30,7 +19,7 @@ export const createHomePage = (props: Props): ToolPage => {
     header={
       <ToolHeader >
         <ToolbarSpacer />
-        <Title text="{/title}" titleStyle="H3" />
+        <Title text="{/HomePage/title}" titleStyle="H3" />
         <ToolbarSpacer />
       </ToolHeader>
     }
@@ -38,7 +27,7 @@ export const createHomePage = (props: Props): ToolPage => {
       <BlockLayout background="Default">
         <BlockLayoutRow >
           <BlockLayoutCell
-            title="{/welcome}"
+            title="{/HomePage/welcome}"
             titleLevel="H1"
             backgroundColorSet="ColorSet11"
             backgroundColorShade="ShadeD"
@@ -53,7 +42,9 @@ export const createHomePage = (props: Props): ToolPage => {
               <Icon src="sap-icon://it-system" size={iconSize} color="Default" />
               {/* with some margin */}
               <Title titleStyle="H2" class="sapUiTinyMarginTopBottom" >Tenants</Title>
-              <Link press={() => { props.AppRouter.to(props.Pages.TenantSetupPage); }}>Setup tenant information</Link>
+              <Link press={() => { dispatch({ type: Constants.Actions.Router.NavTo, param: Constants.Pages.TenantSetupPage }); }}>
+                Setup tenant information
+              </Link>
             </VerticalLayout>
           </BlockLayoutCell>
           <BlockLayoutCell
@@ -94,5 +85,7 @@ export const createHomePage = (props: Props): ToolPage => {
     }
   />;
 
-  return page.setModel(state);
+  return page;
 };
+
+export const createHomePage = bindStore(creator);
