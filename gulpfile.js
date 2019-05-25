@@ -44,7 +44,7 @@ var buildCss = () => {
     .pipe(less());
 };
 
-var copy = ({ preload = false }) => {
+var copy = ({ preload = false, offline = false }) => {
   return merge(
     gulp.src(
       [
@@ -63,6 +63,7 @@ var copy = ({ preload = false }) => {
         bootScriptPath: "./index.js",
         ui5ResourceRoot: resourceRoot,
         preload,
+        offline,
         sourceDir: join(__dirname, "./src"),
         thirdpartyLibPath: "_thirdparty",
         projectNameSpace: namespace,
@@ -73,8 +74,8 @@ var copy = ({ preload = false }) => {
   );
 };
 
-var build = ({ preload = false, sourcemap = false }) => {
-  var tasks = merge(copy({ preload }), buildJs({ sourcemap }), buildCss());
+var build = ({ preload = false, sourcemap = false, offline = false }) => {
+  var tasks = merge(copy({ preload, offline }), buildJs({ sourcemap }), buildCss());
   if (preload) {
     return tasks
       .pipe(gulp.dest(DEST_ROOT))
@@ -96,12 +97,16 @@ var build = ({ preload = false, sourcemap = false }) => {
 
 gulp.task("clean", () => del(DEST_ROOT));
 
-gulp.task("build:sourcemap", () => {
+gulp.task("build:preload", () => {
   return build({ preload: true, sourcemap: true }).pipe(gulp.dest(DEST_ROOT));
 });
 
+gulp.task("build:dev", () => {
+  return build({ preload: false, sourcemap: true }).pipe(gulp.dest(DEST_ROOT));
+});
+
 gulp.task("build", () => {
-  return build({ preload: true, sourcemap: false }).pipe(gulp.dest(DEST_ROOT));
+  return build({ preload: true, sourcemap: false, offline: true }).pipe(gulp.dest(DEST_ROOT));
 });
 
 gulp.task("bs", () => {
@@ -147,7 +152,6 @@ gulp.task("build-css", buildCss);
 
 gulp.task("copy", copy);
 
-gulp.task(
-  "dev:preload",
-  gulp.series("clean", "build:sourcemap", gulp.parallel("bs", "watch"))
-);
+gulp.task("dev", gulp.series("clean", "build:dev", gulp.parallel("bs", "watch")));
+
+gulp.task("dev:preload", gulp.series("clean", "build:preload", gulp.parallel("bs", "watch")));
