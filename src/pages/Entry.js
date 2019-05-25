@@ -9,8 +9,8 @@ import App from "sap/m/App";
  * pages reference
  */
 const Pages = {
-  HomePage: createHomePage(),
-  TenantSetupPage: createTenantSetupPage()
+  [Constants.Pages.HomePage]: createHomePage(),
+  [Constants.Pages.TenantSetupPage]: createTenantSetupPage()
 };
 
 // router & pages have cycle dependency

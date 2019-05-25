@@ -6,8 +6,8 @@ export const Constants = {
 
   Actions: {
     Router: {
-      NavTo: "NavTo",
-      Back: "Back"
+      NavTo: "ActionsRouterNavTo",
+      Back: "ActionsRouterBack"
     }
   },
   Pages: {
