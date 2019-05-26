@@ -19,7 +19,7 @@ const creator = (): ToolPage => {
     header={
       <ToolHeader >
         <ToolbarSpacer />
-        <Title text="{/HomePage/title}" titleStyle="H3" />
+        <Title text="{/AppName}" titleStyle="H3" />
         <ToolbarSpacer />
       </ToolHeader>
     }

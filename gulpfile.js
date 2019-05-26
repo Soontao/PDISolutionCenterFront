@@ -63,7 +63,7 @@ var copy = ({ preload = false, offline = false }) => {
         bootScriptPath: "./index.js",
         ui5ResourceRoot: resourceRoot,
         preload,
-        offline,
+        offline: true,
         sourceDir: join(__dirname, "./src"),
         thirdpartyLibPath: "_thirdparty",
         projectNameSpace: namespace,
@@ -98,11 +98,11 @@ var build = ({ preload = false, sourcemap = false, offline = false }) => {
 gulp.task("clean", () => del(DEST_ROOT));
 
 gulp.task("build:preload", () => {
-  return build({ preload: true, sourcemap: true }).pipe(gulp.dest(DEST_ROOT));
+  return build({ preload: true, sourcemap: true, offline: false }).pipe(gulp.dest(DEST_ROOT));
 });
 
-gulp.task("build:dev", () => {
-  return build({ preload: false, sourcemap: true }).pipe(gulp.dest(DEST_ROOT));
+gulp.task("build:debug", () => {
+  return build({ preload: false, sourcemap: true, offline: false }).pipe(gulp.dest(DEST_ROOT));
 });
 
 gulp.task("build", () => {
@@ -137,6 +137,14 @@ gulp.task("watch", () => {
   gulp.watch(`${SRC_ROOT}/**/*`, gulp.series(["build", "reload"]));
 });
 
+gulp.task("watch:debug", () => {
+  gulp.watch(`${SRC_ROOT}/**/*`, gulp.series(["build:debug", "reload"]));
+});
+
+gulp.task("watch:preload", () => {
+  gulp.watch(`${SRC_ROOT}/**/*`, gulp.series(["build:preload", "reload"]));
+});
+
 gulp.task("live-build", gulp.series("build", "bs"), () => {
   gulp.watch(`${SRC_ROOT}/**/*`, () => gulp.series("build", "reload"));
 });
@@ -152,6 +160,6 @@ gulp.task("build-css", buildCss);
 
 gulp.task("copy", copy);
 
-gulp.task("dev", gulp.series("clean", "build:dev", gulp.parallel("bs", "watch")));
+gulp.task("dev", gulp.series("clean", "build:debug", gulp.parallel("bs", "watch:debug")));
 
-gulp.task("dev:preload", gulp.series("clean", "build:preload", gulp.parallel("bs", "watch")));
+gulp.task("dev:preload", gulp.series("clean", "build:preload", gulp.parallel("bs", "watch:preload")));

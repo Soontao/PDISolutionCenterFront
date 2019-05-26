@@ -1,21 +1,16 @@
 import JSONModel from "sap/ui/model/json/JSONModel";
 import Control from "sap/ui/core/Control";
 
-import { createReducers } from "./reducers/AbstractReducer";
+import { createReducers } from "./Reducer";
 
-const createStore = (initializeState = {}, reducers = {}) => {
+const createStore = (initializeState = {}, fireAction) => {
 
   const store = new JSONModel(initializeState);
 
   const bind = (controlCreator: () => Control) => (...params) => controlCreator(...params).setModel(store);
 
   const dispatch = async(action) => {
-    const r = reducers[action.type];
-    if (r) {
-      await r.action(action.param);
-    } else {
-      throw new Error(`Not found reducer for action "${action.type}"`);
-    }
+    fireAction(action.type, action.param);
   };
 
   return { store, bind, dispatch };
@@ -32,19 +27,32 @@ export interface GlobalState {
 }
 
 const InitializeState: GlobalState = {
-
+  AppName: "PDI Solution Center",
   CurrentUser: {
     username: "",
     email: "",
     federationId: ""
   },
   HomePage: {
-    title: "PDI Solution Center",
     welcome: "Welcome to PDI Solution Center "
+  },
+  TenantSetupPage: {
+    Tenants: [
+      {
+        ID: 9006,
+        Name: "Mock Host",
+        Host: "mock.host.com",
+        Status: "In Development",
+        Version: 10
+      }
+    ],
+    TenantForm: {
+
+    }
   }
 };
 
-const { reducers, registerReducer } = createReducers();
-const { store, bind, dispatch } = createStore(InitializeState, reducers);
+const { fireAction, registerReducer } = createReducers();
+const { store, bind, dispatch } = createStore(InitializeState, fireAction);
 
 export { store as ApplicationStore, bind as bindStore, dispatch, registerReducer };

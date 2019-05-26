@@ -1,7 +1,4 @@
 {
-  "additionalResources": [
-    "sap/m/messagebundle_zh_CN.properties",
-    "sap/ui/core/messagebundle_zh_CN.properties"
-  ],
+  "additionalResources": [],
   "additionalModules": []
 }
