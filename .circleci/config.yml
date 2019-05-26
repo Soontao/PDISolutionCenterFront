@@ -57,3 +57,9 @@ workflows:
               only: /.*/
             branches:
               ignore: /.*/
+      - build:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/
