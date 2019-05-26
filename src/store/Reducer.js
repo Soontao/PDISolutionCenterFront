@@ -11,6 +11,9 @@ export interface Reducers {
 
 export const createReducers = (channel = "application") => {
 
+  // refactor required, to promise action sequence
+  // and reducers should return new state
+
   const bus = new EventBus();
 
   /**
