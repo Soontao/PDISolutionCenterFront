@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/Soontao/PDISolutionCenterFront/compare/v1.1.3...v1.2.0) (2019-05-26)
+
+
+### Features
+
+* **fix:** resource version ([c794db1](https://github.com/Soontao/PDISolutionCenterFront/commit/c794db1))
+* **offline:** mode ([f7c6280](https://github.com/Soontao/PDISolutionCenterFront/commit/f7c6280))
+
+
+
 ### [1.1.3](https://github.com/Soontao/PDISolutionCenterFront/compare/v1.1.2...v1.1.3) (2019-05-21)
 
 
