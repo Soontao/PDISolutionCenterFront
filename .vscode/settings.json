@@ -7,6 +7,8 @@
     "files.eol": "\n",
     "javascript.validate.enable": false,
     "cSpell.words": [
+        "echarts",
+        "preload",
         "unfetch",
         "uxap"
     ]
