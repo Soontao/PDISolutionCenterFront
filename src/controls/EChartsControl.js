@@ -30,23 +30,17 @@ export default class EChartsControl extends Control {
     this._chartContainerId = divId;
   }
 
-  /**
-   * receive new data
-   *
-   * @param {object} data
-   */
-  setData(data) {
-    // if chart exist, update option
-    if (this._chartRef) {
-      this._chartRef.setOption(data);
-    }
-    this.setProperty("data", data, true);
-  }
-
   onAfterRendering() {
     // after render, dom existed
     this._chartRef = echarts.init(document.getElementById(this._chartContainerId));
-    this._chartRef.setOption(this.getProperty("data"));
+
+    // change on dynamic
+    // generally, control use getter/setter to update dom
+    // but for this control. we use a directly way
+    this.getBinding("data").attachEvent("change", (e) => {
+      this._chartRef.setOption(e.getSource().getValue());
+    });
+
   }
 
   renderer(oRM, oControl) {
