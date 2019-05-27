@@ -1,5 +1,7 @@
 import ClientListBinding from "sap/ui/model/ClientListBinding";
 import deepEqual from "sap/base/util/deepEqual";
+import ChangeReason from "sap/ui/model/ChangeReason";
+
 
 export default class ReduxListBinding extends ClientListBinding {
 
@@ -63,7 +65,7 @@ export default class ReduxListBinding extends ClientListBinding {
     var oList = this.oModel._getObject(this.sPath, this.oContext);
     if (!deepEqual(this.oList, oList) || bForceUpdate) {
       this.update();
-      this._fireChange({ reason: "Change" });
+      this._fireChange({ reason: ChangeReason.Change });
     }
 
   }

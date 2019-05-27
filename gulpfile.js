@@ -63,7 +63,7 @@ var copy = ({ preload = false, offline = false }) => {
         bootScriptPath: "./index.js",
         ui5ResourceRoot: resourceRoot,
         preload,
-        offline,
+        offline: true,
         sourceDir: join(__dirname, "./src"),
         thirdpartyLibPath: "_thirdparty",
         projectNameSpace: namespace,

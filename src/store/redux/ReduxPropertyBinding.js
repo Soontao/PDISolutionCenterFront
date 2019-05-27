@@ -18,6 +18,17 @@ export default class ReduxPropertyBinding extends ClientPropertyBinding {
     }
   }
 
+  /**
+   * Get the previous state
+   */
+  getPreState() {
+    return this.oPreValue;
+  }
+
+  getState() {
+    return this.getValue();
+  }
+
   checkUpdate(bForceUpdate) {
 
     if (this.bSuspended) {
@@ -27,10 +38,11 @@ export default class ReduxPropertyBinding extends ClientPropertyBinding {
     var oValue = this._getValue();
 
     if (!deepEqual(oValue, this.oValue) || bForceUpdate) {
+      this.oPreValue = this.oValue;
       this.oValue = oValue;
       this.getDataState().setValue(this.oValue);
       this.checkDataState();
-      this._fireChange({reason: ChangeReason.Change});
+      this._fireChange({ reason: ChangeReason.Change });
     }
   }
 

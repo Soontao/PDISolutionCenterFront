@@ -1,9 +1,32 @@
 import { cloneDeep } from "lodash";
+import { Constants } from './../constants/Constants';
+
+interface ActionData {
+  /**
+   * action type
+   */
+  type: string,
+  /**
+   * action param
+   */
+  param: any,
+}
+
+interface Reducer {
+  /**
+   * action type
+   */
+  type: string,
+  /**
+   * consume action data and return new state
+   */
+  perform: (actionData: ActionData, state: any) => void
+}
 
 const InitializeState = {
   _Router: {
-    History: [],
-    CurrentPage: ""
+    History: [Constants.Pages.HomePage],
+    CurrentPage: Constants.Pages.HomePage
   },
   AppName: "PDI Solution Center",
   CurrentUser: {
@@ -52,19 +75,33 @@ const reducers = {};
 
 const GlobalReducer = (oPreState = InitializeState, oActionData) => {
 
-  const reducer = reducers[oActionData.type];
+  const reducer: Reducer = reducers[oActionData.type];
 
   if (reducer) {
-    return reducer.action(oActionData, cloneDeep(oPreState));
+    return reducer.perform(oActionData, cloneDeep(oPreState));
   } else {
     return oPreState;
   }
 
 };
 
-const registerReducer = (action, bForce = false) => {
+/**
+ * Register new reducer to global store
+ *
+ * with function instead of transitional way just for single way dependency
+ *
+ * and more dynamic provided
+ *
+ * @param {Reducer} reducer
+ * @param {boolean} bForce
+ */
+const registerReducer = (reducer: Reducer, bForce = false) => {
 
-  reducers[action.type] = action;
+  if(!reducers[reducer.type] || bForce){
+    reducers[reducer.type] = reducer;
+  } else {
+    throw new Error(`reducer for action ${reducer.type} has been registered`);
+  }
 
 };
 

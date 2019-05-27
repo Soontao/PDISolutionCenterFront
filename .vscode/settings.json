@@ -10,6 +10,8 @@
         "DEVTOOLS",
         "echarts",
         "preload",
+        "sourcemap",
+        "thirdparty",
         "unfetch",
         "uxap"
     ]

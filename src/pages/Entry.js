@@ -15,41 +15,46 @@ const Pages = {
 };
 
 // router & pages have cycle dependency
+const AppRouter: App = <App pages={values(Pages)} autoFocus={false} />;
 
-const AppRouter: App = <App
-  pages={values(Pages)}
-  autoFocus={false}
-/>;
-
-
+// a data binding container
 const routerDataRef = <CustomData key="history" value="{/_Router}" />;
 
 routerDataRef.setModel(ApplicationStore);
 
-routerDataRef.getBinding("value").attachEvent("change", (e)=>{
-  const _RouterData = e.getSource().getValue();
+routerDataRef.getBinding("value").attachEvent("change", (e) => {
+  const _RouterDataBefore = e.getSource().getPreState();
+  const _RouterData = e.getSource().getState();
   const nextPage = _RouterData.CurrentPage;
   const newHistory = _RouterData.History;
-  if(newHistory[newHistory - 1] != nextPage){
+  // if new history length less, means history removed, means go back
+  if (_RouterDataBefore.History.length >= newHistory.length) {
     AppRouter.back();
   } else {
     AppRouter.to(Pages[nextPage]);
   }
 });
 
+// register reducer, response with router action
 registerReducer({
-  type: Constants.Actions.Router.NavTo, action: ({ type, param }, preState) => {
+  type: Constants.Actions.Router.NavTo, perform: ({ param }, preState) => {
     preState._Router.CurrentPage = param;
-    preState._Router.History = preState._Router.History.concat(param);
+    preState._Router.History.push(param);
     return preState;
   }
 });
 
 registerReducer({
-  type: Constants.Actions.Router.Back, action: ({ type, param }, preState) => {
-    preState._Router.CurrentPage = preState._Router.History.pop();
+  type: Constants.Actions.Router.Back, perform: ({ param }, preState) => {
+    // pop current page
+    preState._Router.History.pop();
+    const backPage = preState._Router.History.pop();
+    preState._Router.History.push(backPage);
+    preState._Router.CurrentPage = backPage;
     return preState;
   }
 });
+
+
 
 export { AppRouter, Pages };

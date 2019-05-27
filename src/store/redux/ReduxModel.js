@@ -4,6 +4,7 @@ import { createStore } from "redux";
 import ReduxPropertyBinding from "./ReduxPropertyBinding";
 import Context from "sap/ui/model/Context";
 import ReduxListBinding from "./ReduxListBinding";
+import ReduxTreeBinding from './ReduxTreeBinding';
 
 
 export default class ReduxModel extends ClientModel {
@@ -16,9 +17,11 @@ export default class ReduxModel extends ClientModel {
     super();
     this._store = createStore(
       reducers,
+      // with redux devtools browser plugin
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     );
     this._store.subscribe(() => {
+      // once any data updated, perform check
       this.checkUpdate();
     });
   }
@@ -72,6 +75,10 @@ export default class ReduxModel extends ClientModel {
 
   bindProperty(sPath, oContext, mParameters) {
     return new ReduxPropertyBinding(this, sPath, oContext, mParameters);
+  }
+
+  bindTree(sPath, oContext, aFilters, mParameters, aSorters) {
+    return new ReduxTreeBinding(this, sPath, oContext, aFilters, mParameters, aSorters);
   }
 
   bindList(sPath, oContext, aSorters, aFilters, mParameters) {

@@ -5,3 +5,15 @@
 PDI Solution Center Front
 
 Experimental UI project for next generation UI5.
+
+## Data drive UI
+
+Instead of event drive UI directly.
+
+## Single way dependency
+
+TO be defined.
+
+## Redux binding
+
+To be documented.
