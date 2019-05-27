@@ -1,48 +1,72 @@
-import EventBus from "sap/ui/core/EventBus";
+import { cloneDeep } from "lodash";
 
-export interface AbstractReducer {
-  type: string,
-  action: (...any) => Promise<void>
-}
-
-export interface Reducers {
-  [string]: AbstractReducer
-}
-
-export const createReducers = (channel = "application") => {
-
-  // refactor required, to promise action sequence
-  // and reducers should return new state
-
-  const bus = new EventBus();
-
-  /**
-   * fire action
-   * @param {*} action
-   * @param {*} param
-   */
-  const fireAction = (action, param = {}) => bus.publish(channel, action, { param });
-
-  /**
-   *  register action reducer
-   *
-   * @param {AbstractReducer} r reducer
-   */
-  const registerReducer = (r: AbstractReducer) => {
-
-    if (!r.type) {
-      throw new Error("Must define the reducer type");
+const InitializeState = {
+  _Router: {
+    History: [],
+    CurrentPage: ""
+  },
+  AppName: "PDI Solution Center",
+  CurrentUser: {
+    username: "",
+    email: "",
+    federationId: ""
+  },
+  HomePage: {
+    welcome: "Welcome to PDI Solution Center",
+    Charts: {
+      Demo: {
+        title: {
+          text: 'ECharts Sample Demo'
+        },
+        tooltip: {},
+        xAxis: {
+          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+        },
+        yAxis: {},
+        series: [{
+          name: '销量',
+          type: 'bar',
+          data: [5, 20, 36, 10, 10, 20]
+        }]
+      }
     }
+  },
+  TenantSetupPage: {
+    Tenants: [
+      {
+        ID: 9006,
+        Name: "Mock Host",
+        Host: "mock.host.com",
+        Status: "In Development",
+        Version: 10
+      }
+    ],
+    TenantForm: {
 
-    if (!r.action) {
-      throw new Error(`Must define the reducer action for "${r.type}"`);
     }
+  }
+};
 
-    bus.subscribe(channel, r.type, (c, e, { param }) => { r.action(param); });
+const reducers = {};
 
-  };
 
-  return { fireAction, registerReducer };
+const GlobalReducer = (oPreState = InitializeState, oActionData) => {
+
+  const reducer = reducers[oActionData.type];
+
+  if (reducer) {
+    return reducer.action(oActionData, cloneDeep(oPreState));
+  } else {
+    return oPreState;
+  }
 
 };
 
+const registerReducer = (action, bForce = false) => {
+
+  reducers[action.type] = action;
+
+};
+
+
+export { GlobalReducer, registerReducer };
