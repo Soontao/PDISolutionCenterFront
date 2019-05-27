@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/Soontao/PDISolutionCenterFront/compare/v1.2.0...v1.3.0) (2019-05-27)
+
+
+### Bug Fixes
+
+* **ci:** script ([dffca12](https://github.com/Soontao/PDISolutionCenterFront/commit/dffca12))
+* json binding ([e99411d](https://github.com/Soontao/PDISolutionCenterFront/commit/e99411d))
+
+
+### Features
+
+* **echarts:** integration ([cda1f9d](https://github.com/Soontao/PDISolutionCenterFront/commit/cda1f9d))
+* **redux:** binding ([2fda7c4](https://github.com/Soontao/PDISolutionCenterFront/commit/2fda7c4))
+
+
+
 ## [1.2.0](https://github.com/Soontao/PDISolutionCenterFront/compare/v1.1.3...v1.2.0) (2019-05-26)
 
 
