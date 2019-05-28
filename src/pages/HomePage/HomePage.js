@@ -10,6 +10,7 @@ import Icon from "sap/ui/core/Icon";
 import Link from "sap/m/Link";
 import { bindStore, dispatch } from "../../store/Store";
 import { Constants } from "../../constants/Constants";
+import Text from "sap/m/Text";
 
 const creator = (): ToolPage => {
 
@@ -27,30 +28,28 @@ const creator = (): ToolPage => {
       <BlockLayout background="Default">
         <BlockLayoutRow >
           <BlockLayoutCell
-            title="{/HomePage/welcome}"
+            title="Welcome to PDI Solution Center"
             titleLevel="H1"
             backgroundColorSet="ColorSet11"
             backgroundColorShade="ShadeD"
-          />
+          >
+            <VerticalLayout>
+              <Text>Provide the central PDI solutions management tool</Text>
+            </VerticalLayout>
+          </BlockLayoutCell>
         </BlockLayoutRow>
         <BlockLayoutRow >
-          <BlockLayoutCell
-            backgroundColorSet="ColorSet11"
-            backgroundColorShade="ShadeA"
-          >
+          <BlockLayoutCell backgroundColorSet="ColorSet11" backgroundColorShade="ShadeA">
             <VerticalLayout>
               <Icon src="sap-icon://it-system" size={iconSize} color="Default" />
               {/* with some margin */}
-              <Title titleStyle="H2" class="sapUiTinyMarginTopBottom" >Tenants</Title>
+              <Title titleStyle="H2" class="sapUiTinyMarginTopBottom">Tenants</Title>
               <Link press={() => { dispatch({ type: Constants.Actions.Router.NavTo, param: Constants.Pages.TenantSetupPage }); }}>
                 Setup tenant information
               </Link>
             </VerticalLayout>
           </BlockLayoutCell>
-          <BlockLayoutCell
-            backgroundColorSet="ColorSet11"
-            backgroundColorShade="ShadeB"
-          >
+          <BlockLayoutCell backgroundColorSet="ColorSet11" backgroundColorShade="ShadeB">
             <VerticalLayout>
               <Icon src="sap-icon://product" size={iconSize} color="Default" />
               {/* with some margin */}
@@ -58,10 +57,7 @@ const creator = (): ToolPage => {
               <Link>Setup solution information</Link>
             </VerticalLayout>
           </BlockLayoutCell>
-          <BlockLayoutCell
-            backgroundColorSet="ColorSet11"
-            backgroundColorShade="ShadeC"
-          >
+          <BlockLayoutCell backgroundColorSet="ColorSet11" backgroundColorShade="ShadeC">
             <VerticalLayout>
               <Icon src="sap-icon://activity-2" size={iconSize} color="Default" />
               {/* with some margin */}
@@ -69,10 +65,7 @@ const creator = (): ToolPage => {
               <Link>Setup schedule job</Link>
             </VerticalLayout>
           </BlockLayoutCell>
-          <BlockLayoutCell
-            backgroundColorSet="ColorSet11"
-            backgroundColorShade="ShadeD"
-          >
+          <BlockLayoutCell backgroundColorSet="ColorSet11" backgroundColorShade="ShadeD">
             <VerticalLayout>
               <Icon src="sap-icon://wrench" size={iconSize} color="Default" />
               {/* with some margin */}

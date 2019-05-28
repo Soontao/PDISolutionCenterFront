@@ -1,7 +1,7 @@
 import { cloneDeep } from "lodash";
 import { Constants } from './../constants/Constants';
 
-interface ActionData {
+export interface ActionData {
   /**
    * action type
    */
@@ -30,29 +30,12 @@ const InitializeState = {
   },
   AppName: "PDI Solution Center",
   CurrentUser: {
-    username: "",
-    email: "",
-    federationId: ""
+    Username: "Unknown",
+    Email: "unknown@host.com",
+    FederationId: ""
   },
   HomePage: {
-    welcome: "Welcome to PDI Solution Center",
-    Charts: {
-      Demo: {
-        title: {
-          text: 'ECharts Sample Demo'
-        },
-        tooltip: {},
-        xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        },
-        yAxis: {},
-        series: [{
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
-        }]
-      }
-    }
+    welcome: "Welcome to PDI Solution Center"
   },
   TenantSetupPage: {
     Tenants: [
@@ -66,19 +49,21 @@ const InitializeState = {
     ],
     TenantForm: {
 
-    }
+    },
+    TenantFormBusy: false,
+    TenantFormValid: false,
+    TenantFormVisible: false
   }
 };
 
-const reducers = {};
-
+const reducers: { [string]: Reducer } = {};
 
 const GlobalReducer = (oPreState = InitializeState, oActionData) => {
 
   const reducer: Reducer = reducers[oActionData.type];
 
   if (reducer) {
-    return reducer.perform(oActionData, cloneDeep(oPreState));
+    return reducer.perform(oActionData, cloneDeep(oPreState)) || oPreState;
   } else {
     return oPreState;
   }
@@ -97,7 +82,7 @@ const GlobalReducer = (oPreState = InitializeState, oActionData) => {
  */
 const registerReducer = (reducer: Reducer, bForce = false) => {
 
-  if(!reducers[reducer.type] || bForce){
+  if (!reducers[reducer.type] || bForce) {
     reducers[reducer.type] = reducer;
   } else {
     throw new Error(`reducer for action ${reducer.type} has been registered`);

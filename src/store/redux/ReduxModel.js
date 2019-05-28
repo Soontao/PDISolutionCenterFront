@@ -1,10 +1,11 @@
 import ClientModel from "sap/ui/model/ClientModel";
-
+import { cloneDeep } from "lodash";
 import { createStore } from "redux";
 import ReduxPropertyBinding from "./ReduxPropertyBinding";
 import Context from "sap/ui/model/Context";
 import ReduxListBinding from "./ReduxListBinding";
 import ReduxTreeBinding from './ReduxTreeBinding';
+import { Constants } from "../../constants/Constants";
 
 
 export default class ReduxModel extends ClientModel {
@@ -26,11 +27,16 @@ export default class ReduxModel extends ClientModel {
     });
   }
 
+  setProperty(sPath, oValue, oContext, bAsyncUpdate) {
+    this.dispatch({ type: Constants.Store.SetProperty, param: { sPath, oValue } });
+    return true;
+  }
+
   getProperty(sPath, oContext) {
     return this._getObject(sPath, oContext);
   }
 
-  _getObject(sPath, oContext) {
+  _getObject(sPath, oContext, bWithOriginalStore) {
     var oNode = null;
     if (oContext instanceof Context) {
       oNode = this._getObject(oContext.getPath());
@@ -41,14 +47,14 @@ export default class ReduxModel extends ClientModel {
       return oNode;
     }
 
-    var oState = this._store.getState();
+    var oState = cloneDeep(this._store.getState());
     var iIndex = 0;
     var aParts = sPath.split('/');
 
     if (!aParts[0]) {
       // absolute path starting with slash
       if (aParts[1] === 'selector') {
-        oNode = this.oSelectors[aParts[2]](this.oStore.getState(), oContext);
+        oNode = this.oSelectors[aParts[2]](oState, oContext);
         iIndex = 3;
       } else {
         oNode = oState[aParts[1]];
@@ -60,12 +66,13 @@ export default class ReduxModel extends ClientModel {
       var sPart = aParts[iIndex];
       var oTmpNode = oNode[sPart];
       if (typeof oTmpNode === 'function') {
-        oNode = oTmpNode(this._store.getState(), oContext);
+        oNode = oTmpNode(oState, oContext);
       } else {
         oNode = oTmpNode;
       }
       iIndex += 1;
     }
+
     return oNode;
   }
 
