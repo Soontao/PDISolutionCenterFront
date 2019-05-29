@@ -1,14 +1,14 @@
 import Control from "sap/ui/core/Control";
-import { GlobalReducer, registerReducer, ActionData } from "./Reducer";
 import { get, filter, trimStart, trimEnd } from "lodash";
-import ReduxModel from "./redux/ReduxModel";
+import ReduxModel, { Reducer, ActionData } from "./redux/ReduxModel";
 import { Constants } from "../constants/Constants";
+import { InitializeState } from "./State";
 
-const createStore = (reducer) => {
+function createStore<T>(initializeState: T) {
 
   const messageMgr = sap.ui.getCore().getMessageManager();
 
-  const store = new ReduxModel(reducer);
+  const store = new ReduxModel(initializeState);
 
   const bind = (controlCreator: () => Control) => (...params) => {
     const c = controlCreator(...params).setModel(store);
@@ -19,6 +19,15 @@ const createStore = (reducer) => {
   const dispatch = async(action: ActionData) => {
     store.dispatch(action);
   };
+
+  /**
+   * Register new reducer to global store
+   *
+   * with function instead of transitional way just for single way dependency
+   *
+   * and more dynamic provided
+   */
+  const registerReducer = (oReducer: Reducer<T>, bForce = false) => { store.registerReducer(oReducer, bForce); };
 
   // register reducer for redux store
   registerReducer({
@@ -33,10 +42,10 @@ const createStore = (reducer) => {
     }
   });
 
-  return { store, bind, dispatch };
+  return { store, bind, dispatch, registerReducer };
 
-};
+}
 
-const { store, bind, dispatch } = createStore(GlobalReducer);
+const { store, bind, dispatch, registerReducer } = createStore(InitializeState);
 
 export { store as ApplicationStore, bind as bindStore, dispatch, registerReducer };

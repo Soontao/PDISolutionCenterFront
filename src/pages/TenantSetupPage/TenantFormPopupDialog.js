@@ -3,6 +3,9 @@ import Dialog from "sap/m/Dialog";
 import { dispatch, registerReducer } from "../../store/Store";
 import { Constants } from "../../constants/Constants";
 import Button from "sap/m/Button";
+import Input from "sap/m/Input";
+import ValueState from "sap/ui/core/ValueState";
+import MessageBox from "sap/m/MessageBox";
 
 export const createTenantFormPopupDialog = () => {
 
@@ -17,9 +20,29 @@ export const createTenantFormPopupDialog = () => {
     busyIndicatorDelay={0}
     buttons={[
       <Button
-        enabled="{/TenantSetupPage/TenantFormValid}"
         press={() => {
-          dispatch({ type: Constants.Actions.TenantSetupPage.CreateNewTenant });
+          try {
+
+            form.getContent().filter(f => f instanceof Input).forEach(f => {
+              try {
+                // if validate failed, will throw error
+                f.getBinding("value").getType().validateValue(f.getProperty("value"));
+              } catch (error) {
+                throw new Error(`${f.getName()}: ${error.message}`);
+              }
+              f.setValueState(ValueState.Success);
+            });
+
+            // after validation
+            dispatch({ type: Constants.Actions.TenantSetupPage.CreateNewTenant });
+
+          } catch (error) {
+
+            MessageBox.error(error.message);
+
+          }
+
+
         }}
         text="Submit"
       />,
@@ -53,7 +76,7 @@ export const createTenantFormPopupDialog = () => {
       oState.TenantSetupPage.TenantFormBusy = false;
       oState.TenantSetupPage.TenantFormValid = false;
       oState.TenantSetupPage.TenantFormVisible = false;
-      oState.TenantSetupPage.TenantForm = {};
+      oState.TenantSetupPage.TenantForm = { Username: "", Password: "", Hostname: "" };
       return oState;
     }
   });

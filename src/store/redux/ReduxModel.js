@@ -7,24 +7,79 @@ import ReduxListBinding from "./ReduxListBinding";
 import ReduxTreeBinding from './ReduxTreeBinding';
 import { Constants } from "../../constants/Constants";
 
+export interface ActionData {
+  /**
+   * action type
+   */
+  type: string,
+  /**
+   * action param
+   */
+  param: any,
+}
 
-export default class ReduxModel extends ClientModel {
+export interface Reducer<T> {
+  /**
+   * action type
+   */
+  type: string,
+  /**
+   * consume action data and return new state
+   */
+  perform: (actionData: ActionData, state: T) => void
+}
+
+export default class ReduxModel<T> extends ClientModel {
 
   metadata = {
-    publicMethods: []
+    publicMethods: ["registerReducer", "dispatch"]
   }
 
-  constructor(reducers) {
+  constructor(initializeState: T = {}) {
+
     super();
+
+    this.reducers = {};
+
     this._store = createStore(
-      reducers,
+      // reducer
+      (oState = initializeState, oActionData) => {
+        const reducer: Reducer = this.reducers[oActionData.type];
+        if (reducer) {
+          return reducer.perform(oActionData, cloneDeep(oState)) || oState;
+        } else {
+          return oState;
+        }
+      },
       // with redux devtools browser plugin
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     );
+
     this._store.subscribe(() => {
       // once any data updated, perform check
       this.checkUpdate();
     });
+
+  }
+
+  /**
+   * Register new reducer to global store
+   *
+   * with function instead of transitional way just for single way dependency
+   *
+   * and more dynamic provided
+   *
+   * @param {Reducer} reducer
+   * @param {boolean} bForce
+   */
+  registerReducer(reducer: Reducer<T>, bForce = false) {
+
+    if (!this.reducers[reducer.type] || bForce) {
+      this.reducers[reducer.type] = reducer;
+    } else {
+      throw new Error(`reducer for action ${reducer.type} has been registered`);
+    }
+
   }
 
   setProperty(sPath, oValue, oContext, bAsyncUpdate) {

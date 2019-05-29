@@ -15,6 +15,7 @@ export const createTenantForm = () => {
     <Label required={true} tooltip="Tenant Hostname" >Tenant Hostname</Label>
     <Input
       valueLiveUpdate={true}
+      name="Tenant Hostname"
       value={{
         path: "/TenantSetupPage/TenantForm/Hostname",
         type: "sap.ui.model.type.String",
@@ -28,6 +29,7 @@ export const createTenantForm = () => {
     />
     <Label required={true}>Tenant Username</Label>
     <Input
+      name="Tenant User"
       valueLiveUpdate={true}
       value={{
         path: "/TenantSetupPage/TenantForm/Username",
@@ -40,6 +42,7 @@ export const createTenantForm = () => {
     />
     <Label required={true}>Tenant User Password</Label>
     <Input
+      name="Tenant User Password"
       value={{
         path: "/TenantSetupPage/TenantForm/Password",
         type: "sap.ui.model.type.String",

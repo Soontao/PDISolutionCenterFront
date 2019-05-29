@@ -12,7 +12,7 @@ Instead of event drive UI directly.
 
 ## Single way dependency
 
-TO be defined.
+To be defined.
 
 ## Redux binding
 
