@@ -21,8 +21,11 @@ interface CurrentUserResponse {
 /**
  * fetch user information
  */
-export const fetchCurrentUserInformation = async(): Promise<CurrentUserResponse> => {
+const fetchCurrentUserInformation = async(): Promise<CurrentUserResponse> => {
   var res = await fetch("/api/v1/user/");
   var body = await res.json();
   return body;
 };
+
+
+export { fetchCurrentUserInformation };

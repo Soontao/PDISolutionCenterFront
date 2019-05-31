@@ -1,11 +1,14 @@
 import ClientModel from "sap/ui/model/ClientModel";
 import { cloneDeep } from "lodash";
-import { createStore } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import ReduxPropertyBinding from "./ReduxPropertyBinding";
 import Context from "sap/ui/model/Context";
 import ReduxListBinding from "./ReduxListBinding";
 import ReduxTreeBinding from './ReduxTreeBinding';
 import { Constants } from "../../constants/Constants";
+import ReduxThunk from 'redux-thunk';
+
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export interface ActionData {
   /**
@@ -26,7 +29,7 @@ export interface Reducer<T> {
   /**
    * consume action data and return new state
    */
-  perform: (actionData: ActionData, state: T) => void
+  perform: (actionData: ActionData, state: T) => T
 }
 
 export default class ReduxModel<T> extends ClientModel {
@@ -52,7 +55,7 @@ export default class ReduxModel<T> extends ClientModel {
         }
       },
       // with redux devtools browser plugin
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+      composeEnhancer(applyMiddleware(ReduxThunk))
     );
 
     this._store.subscribe(() => {

@@ -9,7 +9,6 @@ import MessageBox from "sap/m/MessageBox";
 
 export const createTenantFormPopupDialog = () => {
 
-
   const form = createTenantForm();
 
   const dialog: Dialog = <Dialog

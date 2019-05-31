@@ -1,8 +1,10 @@
 
 export interface CurrentUser {
-  Username: string;
+  ID: string;
+  Name: string;
+  Description: string;
+  FederationLoginID: string;
   Email: string;
-  FederationId: string;
 }
 
 export interface HomePage {
@@ -18,7 +20,8 @@ export interface TenantForm {
 export interface Tenant {
   ID: number;
   Name: string;
-  Host: string;
+  TenantHost: string;
+  TenantUser: string;
   Status: string;
   Version: number;
 }
@@ -28,6 +31,7 @@ export interface TenantSetupPage {
   TenantForm: TenantForm;
   TenantFormBusy: boolean;
   TenantFormVisible: boolean;
+  RefreshNow: boolean;
 }
 
 
@@ -51,29 +55,23 @@ export const InitializeState: InitializeStateType = {
   },
   AppName: "PDI Solution Center",
   CurrentUser: {
-    Username: "Unknown",
+    ID: 0,
+    Name: "Unknown",
     Email: "unknown@host.com",
-    FederationId: ""
+    FederationLoginID: ""
   },
   HomePage: {
     welcome: "Welcome to PDI Solution Center"
   },
   TenantSetupPage: {
-    Tenants: [
-      {
-        ID: 9006,
-        Name: "Mock Host",
-        Host: "mock.host.com",
-        Status: "In Development",
-        Version: 10
-      }
-    ],
+    Tenants: [],
     TenantForm: {
       Hostname: "",
       Password: "",
       Username: ""
     },
     TenantFormBusy: false,
-    TenantFormVisible: false
+    TenantFormVisible: false,
+    RefreshNow: false
   }
 };

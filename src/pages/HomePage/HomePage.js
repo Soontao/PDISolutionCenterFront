@@ -12,6 +12,8 @@ import { bindStore, dispatch } from "../../store/Store";
 import { Constants } from "../../constants/Constants";
 import Text from "sap/m/Text";
 
+
+
 const creator = (): ToolPage => {
 
   const iconSize = "3rem";
@@ -24,6 +26,7 @@ const creator = (): ToolPage => {
         <ToolbarSpacer />
       </ToolHeader>
     }
+
     mainContents={
       <BlockLayout background="Default">
         <BlockLayoutRow >

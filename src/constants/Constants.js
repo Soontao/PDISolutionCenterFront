@@ -16,7 +16,8 @@ export const Constants = {
       BusyIndicator: {
         Show: "GlobalBusyIndicatorShow",
         Hide: "GlobalBusyIndicatorHide"
-      }
+      },
+      SetCurrentUser: "GlobalSetCurrentUser"
     },
     Router: {
       NavTo: "ActionsRouterNavTo",
@@ -24,9 +25,13 @@ export const Constants = {
     },
     TenantSetupPage: {
       CreateNewTenant: "TenantSetupPageCreateNewTenant",
+      ConnectToTenantSuccess: "TenantSetupPageConnectToTenantSuccess",
+      ConnectToTenantFailed: "TenantSetupPageConnectToTenantFailed",
       CleanTenantForm: "TenantSetupPageCleanTenantForm",
       OpenForm: "TenantSetupPageOpenForm",
-      CloseForm: "TenantSetupPageCloseForm"
+      CloseForm: "TenantSetupPageCloseForm",
+      RefreshTenantsList: "TenantSetupPageRefreshTenantsList",
+      SetTenantsListData: "TenantSetupPageSetTenantsListData"
     }
   },
   Pages: {

@@ -28,7 +28,9 @@ const creator = (): ToolPage => {
           <ObjectPageHeaderActionButton text="Add new tenant" hideIcon={true} hideText={false} press={() => {
             dispatch({ type: Constants.Actions.TenantSetupPage.OpenForm });
           }} />,
-          <ObjectPageHeaderActionButton text="Refresh" hideIcon={true} hideText={false} press={() => { }} />
+          <ObjectPageHeaderActionButton text="Refresh" hideIcon={true} hideText={false} press={async() => {
+            dispatch({ type: Constants.Actions.TenantSetupPage.RefreshTenantsList });
+          }} />
 
         ]}
       />
@@ -36,7 +38,13 @@ const creator = (): ToolPage => {
     sections={
       <ObjectPageSection
         showTitle={false}
-        subSections={<ObjectPageSubSection blocks={list} />}
+        subSections={
+          <ObjectPageSubSection
+            blocks={[
+              list
+            ]}
+          />
+        }
       />
     }
   />;
@@ -49,7 +57,7 @@ const creator = (): ToolPage => {
         <ToolbarSpacer />
       </ToolHeader>
     }
-    mainContents={layout}
+    mainContents={[layout]}
   />;
 
   // if dependent addded, the data binding could be applied

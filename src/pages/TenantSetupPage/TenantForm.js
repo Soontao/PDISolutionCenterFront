@@ -3,15 +3,25 @@ import { Constants } from "../../constants/Constants";
 import { dispatch, registerReducer } from "../../store/Store";
 import Label from "sap/m/Label";
 import Input from "sap/m/Input";
-
+import { connectToNewTenant } from "../../api/Tenant";
+import MessageBox from "sap/m/MessageBox";
+import MessageToast from "sap/m/MessageToast";
 
 export const createTenantForm = () => {
 
-  const form: SimpleForm = <SimpleForm
-    validationError={() => {
-      dispatch({ type: Constants.Store.SetProperty, param: { sPath: "/TenantSetupPage/TenantFormValid", oValue: false } });
-    }}
-  >
+  const form: SimpleForm = <SimpleForm>
+    <Label required={true} tooltip="Name" >Name</Label>
+    <Input
+      valueLiveUpdate={true}
+      name="Name"
+      value={{
+        path: "/TenantSetupPage/TenantForm/Name",
+        type: "sap.ui.model.type.String",
+        constraints: {
+          minLength: 1
+        }
+      }}
+    />
     <Label required={true} tooltip="Tenant Hostname" >Tenant Hostname</Label>
     <Input
       valueLiveUpdate={true}
@@ -56,10 +66,41 @@ export const createTenantForm = () => {
 
   registerReducer({
     type: Constants.Actions.TenantSetupPage.CreateNewTenant,
-    perform: (data, preState) => {
-      preState.TenantSetupPage.TenantFormBusy = true;
+    perform: (data, oState) => {
+      oState.TenantSetupPage.TenantFormBusy = true;
+      const formData = oState.TenantSetupPage.TenantForm;
+
+      connectToNewTenant(formData)
+        .then(response => {
+          dispatch({ type: Constants.Actions.TenantSetupPage.ConnectToTenantSuccess });
+        })
+        .catch(error => {
+          dispatch({ type: Constants.Actions.TenantSetupPage.ConnectToTenantFailed, param: error });
+        });
+
       // async data transform
-      return preState;
+      return oState;
+    }
+  });
+
+  registerReducer({
+    type: Constants.Actions.TenantSetupPage.ConnectToTenantSuccess,
+    perform: (data, oState) => {
+      oState.TenantSetupPage.TenantFormBusy = false;
+      oState.TenantSetupPage.TenantFormVisible = false;
+      oState.TenantSetupPage.TenantForm = {};
+      MessageToast.show("Connected");
+      // refresh here
+      return oState;
+    }
+  });
+
+  registerReducer({
+    type: Constants.Actions.TenantSetupPage.ConnectToTenantFailed,
+    perform: ({ param }, oState) => {
+      oState.TenantSetupPage.TenantFormBusy = false;
+      MessageBox.error(param.message);
+      return oState;
     }
   });
 
