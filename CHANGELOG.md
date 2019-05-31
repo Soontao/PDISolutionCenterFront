@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/Soontao/PDISolutionCenterFront/compare/v1.4.1...v1.5.0) (2019-05-31)
+
+
+### Features
+
+* **tenant:** integration ([7ed300a](https://github.com/Soontao/PDISolutionCenterFront/commit/7ed300a))
+
+
+
 ### [1.4.1](https://github.com/Soontao/PDISolutionCenterFront/compare/v1.4.0...v1.4.1) (2019-05-28)
 
 
