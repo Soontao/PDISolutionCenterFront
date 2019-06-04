@@ -134,8 +134,8 @@ export default class ReduxModel<T> extends ClientModel {
     return oNode;
   }
 
-  dispatch(action) {
-    this._store.dispatch(action);
+  dispatch(...params) {
+    this._store.dispatch(...params);
   }
 
   bindProperty(sPath, oContext, mParameters) {
