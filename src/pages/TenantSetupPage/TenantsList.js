@@ -2,7 +2,6 @@ import List from "sap/m/List";
 import ObjectListItem from "sap/m/ObjectListItem";
 import CustomData from "sap/ui/core/CustomData";
 import ObjectAttribute from "sap/m/ObjectAttribute";
-import MessageToast from "sap/m/MessageToast";
 import { registerReducer, dispatch } from "../../store/Store";
 import { Constants } from "../../constants/Constants";
 import { fetchCurrentUserAllTenants } from "../../api/Tenant";
@@ -32,7 +31,9 @@ export const createTenantsList = () => {
 
           // when press, get data from custom data
           press={(e) => {
-            var itemId = e.getSource().getCustomData()[0].getValue(); MessageToast.show(`Click Item: ${itemId}`);
+            var itemId = e.getSource().getCustomData()[0].getValue();
+            // may be need refactor
+            window.location.hash = `#/${Constants.Pages.TenantDetailPage}/${itemId}`;
           }}
         />
       )
@@ -59,12 +60,6 @@ export const createTenantsList = () => {
     }
   });
 
-
-  list.addEventDelegate({
-    onAfterRendering: async() => {
-      dispatch({ type: Constants.Actions.TenantSetupPage.RefreshTenantsList });
-    }
-  });
 
   return list;
 

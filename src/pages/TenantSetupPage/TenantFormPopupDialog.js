@@ -4,8 +4,8 @@ import { dispatch, registerReducer } from "../../store/Store";
 import { Constants } from "../../constants/Constants";
 import Button from "sap/m/Button";
 import Input from "sap/m/Input";
-import ValueState from "sap/ui/core/ValueState";
 import MessageBox from "sap/m/MessageBox";
+import { connectToNewTenant } from "../../api/Tenant";
 
 export const createTenantFormPopupDialog = () => {
 
@@ -16,6 +16,11 @@ export const createTenantFormPopupDialog = () => {
     // reuse existed property
     visible="{/TenantSetupPage/TenantFormVisible}"
     busy="{/TenantSetupPage/TenantFormBusy}"
+    beforeClose={() => {
+      // when keyboard input the 'esc', also will trigger close
+      // so that sync close state to store here
+      dispatch({ type: Constants.Actions.TenantSetupPage.CloseForm });
+    }}
     busyIndicatorDelay={0}
     buttons={[
       <Button
@@ -29,11 +34,32 @@ export const createTenantFormPopupDialog = () => {
               } catch (error) {
                 throw new Error(`${f.getName()}: ${error.message}`);
               }
-              f.setValueState(ValueState.Success);
             });
 
-            // after validation
-            dispatch({ type: Constants.Actions.TenantSetupPage.CreateNewTenant });
+            // yes, redux thunk
+            dispatch(async(dispatch, getState) => {
+
+              const oState = getState();
+              const formData = oState.TenantSetupPage.TenantForm;
+
+              try {
+                // set busy now
+                dispatch({ type: Constants.Actions.TenantSetupPage.CreateNewTenant });
+                await connectToNewTenant(formData);
+                // success
+                dispatch({ type: Constants.Actions.TenantSetupPage.ConnectToTenantSuccess });
+                // refresh list
+                dispatch({ type: Constants.Actions.TenantSetupPage.RefreshTenantsList });
+
+              } catch (error) {
+
+                // hide busy
+                dispatch({ type: Constants.Actions.TenantSetupPage.ConnectToTenantFailed });
+                // show error message
+                dispatch({ type: Constants.Actions.Global.Error, param: error });
+              }
+
+            });
 
           } catch (error) {
 

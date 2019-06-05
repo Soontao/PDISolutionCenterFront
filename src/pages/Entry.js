@@ -1,4 +1,4 @@
-import { values, forEach } from "lodash";
+import { values } from "lodash";
 import { registerReducer, dispatch } from "../store/Store";
 import { Constants } from "../constants/Constants";
 import App from "sap/m/App";
@@ -6,6 +6,7 @@ import Control from "sap/ui/core/Control";
 import ReduxModel from "../store/redux/ReduxModel";
 import { Path } from "./Path";
 import { fetchCurrentUserInformation } from "../api/User";
+import MessageBox from "sap/m/MessageBox";
 import MessageToast from "sap/m/MessageToast";
 
 export const createRouter = (pages: { [string]: Control }, store: ReduxModel, homePage: string = "HomePage") => {
@@ -13,11 +14,18 @@ export const createRouter = (pages: { [string]: Control }, store: ReduxModel, ho
   // router & pages have cycle dependency
   const app: App = <App pages={values(pages)} autoFocus={false} defaultTransitionName="show" />;
 
-  forEach(pages, (page, name) => {
-    Path.map(`#/${name}`).to(() => {
-      app.to(page);
-    });
+  Path.map(`#/${Constants.Pages.TenantSetupPage}`).to(() => {
+    app.to(pages[Constants.Pages.TenantSetupPage]);
   });
+
+  Path.map(`#/${Constants.Pages.HomePage}`).to(() => {
+    app.to(pages[Constants.Pages.HomePage]);
+  });
+
+  Path.map(`#/${Constants.Pages.TenantDetailPage}/:id`).to(({ id }) => {
+    app.to(pages[Constants.Pages.TenantDetailPage], "show", { id });
+  });
+
 
   Path.root(`#/${homePage}`);
 
@@ -52,6 +60,15 @@ export const createRouter = (pages: { [string]: Control }, store: ReduxModel, ho
     }
   });
 
+  registerReducer({
+    type: Constants.Actions.Global.Error,
+    perform: ({ param }, oState) => {
+      oState.TenantSetupPage.TenantFormBusy = false;
+      MessageBox.error(param.message);
+      return oState;
+    }
+  });
+
   app.addEventDelegate({
 
     onAfterRendering: async() => {
@@ -73,4 +90,5 @@ export const createRouter = (pages: { [string]: Control }, store: ReduxModel, ho
     app.placeAt(domRef);
     Path.listen();
   };
+
 };

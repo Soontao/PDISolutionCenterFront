@@ -73,5 +73,9 @@ export const InitializeState: InitializeStateType = {
     TenantFormBusy: false,
     TenantFormVisible: false,
     RefreshNow: false
+  },
+  TenantDetailPage: {
+    Busy: false,
+    TenantInfo: {}
   }
 };

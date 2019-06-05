@@ -1,16 +1,14 @@
 import ToolPage from "sap/tnt/ToolPage";
-import ToolHeader from "sap/tnt/ToolHeader";
 import { bindStore, dispatch } from "../../store/Store";
 import ObjectPageLayout from "sap/uxap/ObjectPageLayout";
 import ObjectPageHeader from "sap/uxap/ObjectPageHeader";
 import ObjectPageSection from "sap/uxap/ObjectPageSection";
 import ObjectPageSubSection from "sap/uxap/ObjectPageSubSection";
 import ObjectPageHeaderActionButton from "sap/uxap/ObjectPageHeaderActionButton";
-import ToolbarSpacer from "sap/m/ToolbarSpacer";
-import Title from "sap/m/Title";
 import { createTenantsList } from "./TenantsList";
 import { createTenantFormPopupDialog } from "./TenantFormPopupDialog";
 import { Constants } from "../../constants/Constants";
+import { createHeader } from "../Shared/Header";
 
 const creator = (): ToolPage => {
 
@@ -31,7 +29,6 @@ const creator = (): ToolPage => {
           <ObjectPageHeaderActionButton text="Refresh" hideIcon={true} hideText={false} press={async() => {
             dispatch({ type: Constants.Actions.TenantSetupPage.RefreshTenantsList });
           }} />
-
         ]}
       />
     }
@@ -40,9 +37,7 @@ const creator = (): ToolPage => {
         showTitle={false}
         subSections={
           <ObjectPageSubSection
-            blocks={[
-              list
-            ]}
+            blocks={[list]}
           />
         }
       />
@@ -50,18 +45,18 @@ const creator = (): ToolPage => {
   />;
 
   const page: ToolPage = <ToolPage
-    header={
-      <ToolHeader>
-        <ToolbarSpacer />
-        <Title text="{/AppName}" titleStyle="H3" />
-        <ToolbarSpacer />
-      </ToolHeader>
-    }
+    header={createHeader()}
     mainContents={[layout]}
   />;
 
   // if dependent addded, the data binding could be applied
   page.addDependent(dialog);
+
+  page.addEventDelegate({
+    onBeforeShow: ()=> {
+      dispatch({ type: Constants.Actions.TenantSetupPage.RefreshTenantsList });
+    }
+  });
 
   return page;
 };

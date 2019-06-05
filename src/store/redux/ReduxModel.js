@@ -21,6 +21,8 @@ export interface ActionData {
   param: any,
 }
 
+export type ThunkAction<T> = (dispatch: (action: ActionData | ThunkAction) => void, getState: () => T) => Promise<void>;
+
 export interface Reducer<T> {
   /**
    * action type
@@ -66,15 +68,15 @@ export default class ReduxModel<T> extends ClientModel {
   }
 
   /**
-   * Register new reducer to global store
-   *
-   * with function instead of transitional way just for single way dependency
-   *
-   * and more dynamic provided
-   *
-   * @param {Reducer} reducer
-   * @param {boolean} bForce
-   */
+ * Register new reducer to global store
+ *
+ * with function instead of transitional way just for single way dependency
+ *
+ * and more dynamic provided
+ *
+* @param {Reducer} reducer
+* @param {boolean} bForce
+  */
   registerReducer(reducer: Reducer<T>, bForce = false) {
 
     if (!this.reducers[reducer.type] || bForce) {

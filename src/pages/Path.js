@@ -184,7 +184,7 @@ Path.core.Route.prototype = {
       }
     }
     if (!haltExecution) {
-      Path.routes.defined[this.path].action();
+      Path.routes.defined[this.path].action(this.params);
     }
   }
 };

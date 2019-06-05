@@ -1,10 +1,8 @@
 import SimpleForm from "sap/ui/layout/form/SimpleForm";
 import { Constants } from "../../constants/Constants";
-import { dispatch, registerReducer } from "../../store/Store";
+import { registerReducer } from "../../store/Store";
 import Label from "sap/m/Label";
 import Input from "sap/m/Input";
-import { connectToNewTenant } from "../../api/Tenant";
-import MessageBox from "sap/m/MessageBox";
 import MessageToast from "sap/m/MessageToast";
 
 export const createTenantForm = () => {
@@ -16,6 +14,18 @@ export const createTenantForm = () => {
       name="Name"
       value={{
         path: "/TenantSetupPage/TenantForm/Name",
+        type: "sap.ui.model.type.String",
+        constraints: {
+          minLength: 1
+        }
+      }}
+    />
+    <Label required={true} tooltip="Description" >Description</Label>
+    <Input
+      valueLiveUpdate={true}
+      name="Description"
+      value={{
+        path: "/TenantSetupPage/TenantForm/Description",
         type: "sap.ui.model.type.String",
         constraints: {
           minLength: 1
@@ -68,17 +78,6 @@ export const createTenantForm = () => {
     type: Constants.Actions.TenantSetupPage.CreateNewTenant,
     perform: (data, oState) => {
       oState.TenantSetupPage.TenantFormBusy = true;
-      const formData = oState.TenantSetupPage.TenantForm;
-
-      connectToNewTenant(formData)
-        .then(response => {
-          dispatch({ type: Constants.Actions.TenantSetupPage.ConnectToTenantSuccess });
-        })
-        .catch(error => {
-          dispatch({ type: Constants.Actions.TenantSetupPage.ConnectToTenantFailed, param: error });
-        });
-
-      // async data transform
       return oState;
     }
   });
@@ -97,9 +96,8 @@ export const createTenantForm = () => {
 
   registerReducer({
     type: Constants.Actions.TenantSetupPage.ConnectToTenantFailed,
-    perform: ({ param }, oState) => {
+    perform: (_, oState) => {
       oState.TenantSetupPage.TenantFormBusy = false;
-      MessageBox.error(param.message);
       return oState;
     }
   });

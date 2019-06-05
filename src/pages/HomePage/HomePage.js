@@ -1,16 +1,15 @@
 import ToolPage from "sap/tnt/ToolPage";
-import ToolHeader from "sap/tnt/ToolHeader";
 import Title from "sap/m/Title";
 import BlockLayout from "sap/ui/layout/BlockLayout";
 import BlockLayoutRow from "sap/ui/layout/BlockLayoutRow";
 import BlockLayoutCell from "sap/ui/layout/BlockLayoutCell";
-import ToolbarSpacer from "sap/m/ToolbarSpacer";
 import VerticalLayout from "sap/ui/layout/VerticalLayout";
 import Icon from "sap/ui/core/Icon";
 import Link from "sap/m/Link";
 import { bindStore, dispatch } from "../../store/Store";
 import { Constants } from "../../constants/Constants";
 import Text from "sap/m/Text";
+import { createHeader } from "../Shared/Header";
 
 
 
@@ -19,13 +18,7 @@ const creator = (): ToolPage => {
   const iconSize = "3rem";
 
   const page: ToolPage = <ToolPage
-    header={
-      <ToolHeader >
-        <ToolbarSpacer />
-        <Title text="{/AppName}" titleStyle="H3" />
-        <ToolbarSpacer />
-      </ToolHeader>
-    }
+    header={createHeader()}
 
     mainContents={
       <BlockLayout background="Default">

@@ -1,6 +1,6 @@
 import Control from "sap/ui/core/Control";
 import { get, filter, trimStart, trimEnd } from "lodash";
-import ReduxModel, { Reducer, ActionData } from "./redux/ReduxModel";
+import ReduxModel, { Reducer, ActionData, ThunkAction } from "./redux/ReduxModel";
 import { Constants } from "../constants/Constants";
 import { InitializeState } from "./State";
 
@@ -16,7 +16,7 @@ function createStore<T>(initializeState: T) {
     return c;
   };
 
-  const dispatch = async(action: ActionData) => {
+  const dispatch = (action: ActionData | ThunkAction<T>) => {
     store.dispatch(action);
   };
 

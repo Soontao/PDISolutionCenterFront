@@ -9,15 +9,14 @@ export const Constants = {
     SetProperty: "StoreSetProperty"
   },
 
-
-
   Actions: {
     Global: {
       BusyIndicator: {
         Show: "GlobalBusyIndicatorShow",
         Hide: "GlobalBusyIndicatorHide"
       },
-      SetCurrentUser: "GlobalSetCurrentUser"
+      SetCurrentUser: "GlobalSetCurrentUser",
+      Error: "GlobalError"
     },
     Router: {
       NavTo: "ActionsRouterNavTo",
@@ -32,11 +31,19 @@ export const Constants = {
       CloseForm: "TenantSetupPageCloseForm",
       RefreshTenantsList: "TenantSetupPageRefreshTenantsList",
       SetTenantsListData: "TenantSetupPageSetTenantsListData"
+    },
+    TenantDetailPage: {
+      OnRefresh: "TenantDetailPageOnRefresh",
+      RefreshFinished: "TenantDetailPageRefreshFinished",
+      SetTenantPageInfo: "TenantDetailPageSetTenantPageInfo"
     }
   },
+
+
   Pages: {
     HomePage: "HomePage",
-    TenantSetupPage: "TenantSetupPage"
+    TenantSetupPage: "TenantSetupPage",
+    TenantDetailPage: "TenantDetailPage"
   }
 
 
