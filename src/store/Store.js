@@ -1,7 +1,5 @@
 import Control from "sap/ui/core/Control";
-import { get, filter, trimStart, trimEnd } from "lodash";
 import ReduxModel, { Reducer, ActionData, ThunkAction } from "./redux/ReduxModel";
-import { Constants } from "../constants/Constants";
 import { InitializeState } from "./State";
 
 function createStore<T>(initializeState: T) {
@@ -28,19 +26,6 @@ function createStore<T>(initializeState: T) {
    * and more dynamic provided
    */
   const registerReducer = (oReducer: Reducer<T>, bForce = false) => { store.registerReducer(oReducer, bForce); };
-
-  // register reducer for redux store
-  registerReducer({
-    // if set property, update property new data to store
-    type: Constants.Store.SetProperty, perform: ({ param: { sPath = "", oValue } }, oState) => {
-      sPath = trimStart(trimEnd(sPath, "}"), "{");
-      const aParts = filter(sPath.split("/"));
-      const sProperty = aParts.pop();
-      const oUpdateBase = get(oState, aParts) || {};
-      oUpdateBase[sProperty] = oValue;
-      return oState;
-    }
-  });
 
   return { store, bind, dispatch, registerReducer };
 

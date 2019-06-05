@@ -5,8 +5,10 @@ import ReduxPropertyBinding from "./ReduxPropertyBinding";
 import Context from "sap/ui/model/Context";
 import ReduxListBinding from "./ReduxListBinding";
 import ReduxTreeBinding from './ReduxTreeBinding';
-import { Constants } from "../../constants/Constants";
+import { get, filter, trimStart, trimEnd } from "lodash";
 import ReduxThunk from 'redux-thunk';
+
+const CONST_SET_PROPERTY = "Internal.SetProperty";
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -44,7 +46,21 @@ export default class ReduxModel<T> extends ClientModel {
 
     super();
 
-    this.reducers = {};
+    this.reducers = {
+
+      [CONST_SET_PROPERTY]: {
+        type: CONST_SET_PROPERTY,
+        perform: ({ param: { sPath = "", oValue } }, oState) => {
+          sPath = trimStart(trimEnd(sPath, "}"), "{");
+          const aParts = filter(sPath.split("/"));
+          const sProperty = aParts.pop();
+          const oUpdateBase = get(oState, aParts) || {};
+          oUpdateBase[sProperty] = oValue;
+          return oState;
+        }
+      }
+
+    };
 
     this._store = createStore(
       // reducer
@@ -88,7 +104,7 @@ export default class ReduxModel<T> extends ClientModel {
   }
 
   setProperty(sPath, oValue, oContext, bAsyncUpdate) {
-    this.dispatch({ type: Constants.Store.SetProperty, param: { sPath, oValue } });
+    this.dispatch({ type: CONST_SET_PROPERTY, param: { sPath, oValue } });
     return true;
   }
 
