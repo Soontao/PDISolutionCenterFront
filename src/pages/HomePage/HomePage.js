@@ -17,6 +17,10 @@ const creator = (): ToolPage => {
 
   const iconSize = "3rem";
 
+  const dispatchNotImpl = () => {
+    dispatch({ type: Constants.Actions.Global.Error, param: new Error("Not implement now.") });
+  };
+
   const page: ToolPage = <ToolPage
     header={createHeader()}
 
@@ -50,7 +54,7 @@ const creator = (): ToolPage => {
               <Icon src="sap-icon://product" size={iconSize} color="Default" />
               {/* with some margin */}
               <Title titleStyle="H2" class="sapUiTinyMarginTopBottom" >Solutions</Title>
-              <Link>Setup solution information</Link>
+              <Link press={dispatchNotImpl}>Setup solution information</Link>
             </VerticalLayout>
           </BlockLayoutCell>
           <BlockLayoutCell backgroundColorSet="ColorSet11" backgroundColorShade="ShadeC">
@@ -58,7 +62,7 @@ const creator = (): ToolPage => {
               <Icon src="sap-icon://activity-2" size={iconSize} color="Default" />
               {/* with some margin */}
               <Title titleStyle="H2" class="sapUiTinyMarginTopBottom" >Schedule Job</Title>
-              <Link>Setup schedule job</Link>
+              <Link press={dispatchNotImpl}>Setup schedule job</Link>
             </VerticalLayout>
           </BlockLayoutCell>
           <BlockLayoutCell backgroundColorSet="ColorSet11" backgroundColorShade="ShadeD">
@@ -66,7 +70,7 @@ const creator = (): ToolPage => {
               <Icon src="sap-icon://wrench" size={iconSize} color="Default" />
               {/* with some margin */}
               <Title titleStyle="H2" class="sapUiTinyMarginTopBottom" >Tools</Title>
-              <Link>Some util tools</Link>
+              <Link press={dispatchNotImpl}>Some util tools</Link>
             </VerticalLayout>
           </BlockLayoutCell>
         </BlockLayoutRow>
