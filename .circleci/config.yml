@@ -38,7 +38,7 @@ jobs:
       - image: circleci-sonar-scanner-docker
     steps:
       - checkout
-      - sonar-scanner -Dsonar.projectKey=Soontao_PDISolutionCenterFront -Dsonar.organization=soontao-github -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io  -Dsonar.login=5d7391c85b44731ca7c69028195ed84c3dcfee54
+      - run: sonar-scanner -Dsonar.projectKey=Soontao_PDISolutionCenterFront -Dsonar.organization=soontao-github -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io  -Dsonar.login=5d7391c85b44731ca7c69028195ed84c3dcfee54
 
   deploy:
     docker:
