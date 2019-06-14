@@ -5,7 +5,7 @@ import { createHeader } from "../Shared/Header";
 
 const creator = () => {
 
-  const page :ToolPage = <ToolPage
+  const page: ToolPage = <ToolPage
     header={createHeader()}
   />;
 

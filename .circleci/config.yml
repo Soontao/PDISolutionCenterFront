@@ -33,6 +33,13 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+  sonar:
+    docker:
+      - image: circleci-sonar-scanner-docker
+    steps:
+      - checkout
+      - sonar-scanner -Dsonar.projectKey=Soontao_PDISolutionCenterFront -Dsonar.organization=soontao-github -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io  -Dsonar.login=5d7391c85b44731ca7c69028195ed84c3dcfee54
+
   deploy:
     docker:
       - image: cibuilds/github:0.10
@@ -58,6 +65,12 @@ workflows:
             branches:
               ignore: /.*/
       - build:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/
+      - sonar:
           filters:
             branches:
               only: /.*/
