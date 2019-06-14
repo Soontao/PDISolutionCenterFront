@@ -62,7 +62,9 @@ const creator = (): ToolPage => {
               <Icon src="sap-icon://activity-2" size={iconSize} color="Default" />
               {/* with some margin */}
               <Title titleStyle="H2" class="sapUiTinyMarginTopBottom" >Schedule Job</Title>
-              <Link press={dispatchNotImpl}>Setup schedule job</Link>
+              <Link press={() => { dispatch({ type: Constants.Actions.Router.NavTo, param: Constants.Pages.ScheduleSetupPage }); }}>
+                Setup schedule job
+              </Link>
             </VerticalLayout>
           </BlockLayoutCell>
           <BlockLayoutCell backgroundColorSet="ColorSet11" backgroundColorShade="ShadeD">

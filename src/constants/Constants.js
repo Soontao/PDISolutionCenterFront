@@ -43,7 +43,8 @@ export const Constants = {
   Pages: {
     HomePage: "HomePage",
     TenantSetupPage: "TenantSetupPage",
-    TenantDetailPage: "TenantDetailPage"
+    TenantDetailPage: "TenantDetailPage",
+    ScheduleSetupPage: "ScheduleSetupPage"
   }
 
 

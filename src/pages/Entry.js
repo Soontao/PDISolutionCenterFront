@@ -1,56 +1,37 @@
-import { values } from "lodash";
 import { registerReducer, dispatch } from "../store/Store";
 import { Constants } from "../constants/Constants";
-import App from "sap/m/App";
-import Control from "sap/ui/core/Control";
 import ReduxModel from "../store/redux/ReduxModel";
-import { Path } from "./Path";
 import { fetchCurrentUserInformation } from "../api/User";
+import { RouterConfig, createRouter } from "../router/Router";
 import MessageBox from "sap/m/MessageBox";
 import MessageToast from "sap/m/MessageToast";
+import { createHomePage } from "./HomePage/HomePage";
+import { createTenantSetupPage } from "./TenantSetupPage/TenantsSetupPage";
+import { createTenantDetailPage } from "./TenantDetailPage/TenantDetailPage";
+import { createScheduleSetupPage } from "./ScheduleSetupPage/ScheduleSetupPage";
 
-export const createRouter = (pages: { [string]: Control }, store: ReduxModel, homePage: string = "HomePage") => {
+export const createApp = (store: ReduxModel) => {
 
-  // router & pages have cycle dependency
-  const app: App = <App pages={values(pages)} autoFocus={false} defaultTransitionName="show" />;
-
-  Path.map(`#/${Constants.Pages.TenantSetupPage}`).to(() => {
-    app.to(pages[Constants.Pages.TenantSetupPage]);
-  });
-
-  Path.map(`#/${Constants.Pages.HomePage}`).to(() => {
-    app.to(pages[Constants.Pages.HomePage]);
-  });
-
-  Path.map(`#/${Constants.Pages.TenantDetailPage}/:id`).to(({ id }) => {
-    app.to(pages[Constants.Pages.TenantDetailPage], "show", { id });
-  });
-
-
-  Path.root(`#/${homePage}`);
-
-  // register reducer, response with router action
-  registerReducer({
-    type: Constants.Actions.Router.NavTo, perform: ({ param }, oState) => {
-      window.location.hash = `/${param}`;
-      return oState;
-    }
-  });
-
-  registerReducer({
-    type: Constants.Actions.Router.Back, perform: ({ param }, oState) => {
-      const history = oState._Router.History || [];
-      const historySize = history.length;
-      if (historySize > 0) {
-        const backPage = history[historySize - 2];
-        window.location.hash = backPage;
-      } else {
-        // pop current page
-        window.history.back();
+  const routerConfig: RouterConfig = {
+    defaultRouteValue: "#/HomePage",
+    routes: {
+      [Constants.Pages.HomePage]: {
+        content: createHomePage()
+      },
+      [Constants.Pages.TenantSetupPage]: {
+        content: createTenantSetupPage()
+      },
+      [Constants.Pages.TenantDetailPage]: {
+        pattern: `#/${Constants.Pages.TenantDetailPage}/:id`,
+        content: createTenantDetailPage()
+      },
+      [Constants.Pages.ScheduleSetupPage]: {
+        content: createScheduleSetupPage()
       }
-      return oState;
     }
-  });
+  };
+
+  const { app, start } = createRouter(routerConfig, store);
 
   registerReducer({
     type: Constants.Actions.Global.SetCurrentUser,
@@ -63,7 +44,6 @@ export const createRouter = (pages: { [string]: Control }, store: ReduxModel, ho
   registerReducer({
     type: Constants.Actions.Global.Error,
     perform: ({ param }, oState) => {
-      oState.TenantSetupPage.TenantFormBusy = false;
       MessageBox.error(param.message);
       return oState;
     }
@@ -86,9 +66,6 @@ export const createRouter = (pages: { [string]: Control }, store: ReduxModel, ho
 
   });
 
-  return (domRef) => {
-    app.placeAt(domRef);
-    Path.listen();
-  };
+  return start;
 
 };
