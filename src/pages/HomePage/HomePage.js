@@ -6,7 +6,7 @@ import BlockLayoutCell from "sap/ui/layout/BlockLayoutCell";
 import VerticalLayout from "sap/ui/layout/VerticalLayout";
 import Icon from "sap/ui/core/Icon";
 import Link from "sap/m/Link";
-import { bindStore, dispatch } from "../../store/Store";
+import { dispatch } from "../../store/Store";
 import { Constants } from "../../constants/Constants";
 import Text from "sap/m/Text";
 import { createHeader } from "../Shared/Header";
@@ -83,4 +83,4 @@ const creator = (): ToolPage => {
   return page;
 };
 
-export const createHomePage = bindStore(creator);
+export const createHomePage = creator;

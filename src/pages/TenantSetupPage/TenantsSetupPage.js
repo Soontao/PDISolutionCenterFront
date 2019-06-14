@@ -1,5 +1,5 @@
 import ToolPage from "sap/tnt/ToolPage";
-import { bindStore, dispatch } from "../../store/Store";
+import { dispatch } from "../../store/Store";
 import ObjectPageLayout from "sap/uxap/ObjectPageLayout";
 import ObjectPageHeader from "sap/uxap/ObjectPageHeader";
 import ObjectPageSection from "sap/uxap/ObjectPageSection";
@@ -61,4 +61,4 @@ const creator = (): ToolPage => {
   return page;
 };
 
-export const createTenantSetupPage = bindStore(creator);
+export const createTenantSetupPage = creator;

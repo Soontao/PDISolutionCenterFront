@@ -21,14 +21,20 @@ export const createRouter = (config: RouterConfig, store: ReduxModel) => {
 
   const homePage = config.defaultRouteValue || "/";
 
-  const app: App = <App pages={values(config.routes).map(r => r.content)} autoFocus={false} defaultTransitionName="show" />;
+  const app: App = <App
+    pages={values(config.routes).map(r => r.content.setModel(store))}
+    autoFocus={false}
+    defaultTransitionName="show"
+  />;
 
   forEach(config.routes, (route, name) => {
 
     const pattern = route.pattern || `#/${name}`;
 
     Path.map(pattern).to(param => {
+
       app.to(route.content, "show", param);
+
     });
 
   });

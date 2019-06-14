@@ -1,4 +1,4 @@
-import { bindStore, dispatch, registerReducer } from "../../store/Store";
+import { dispatch, registerReducer } from "../../store/Store";
 import ToolPage from "sap/tnt/ToolPage";
 import { Constants } from "../../constants/Constants";
 import { fetchTenantDetail } from "../../api/Tenant";
@@ -74,4 +74,4 @@ export const creator = () => {
 
 };
 
-export const createTenantDetailPage = bindStore(creator);
+export const createTenantDetailPage = creator;
