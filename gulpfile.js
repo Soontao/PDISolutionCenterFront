@@ -13,6 +13,8 @@ var ui5preload = eagerPreload.componentPreload;
 var additionalPreload = require("./ui5Preload");
 var { join } = require("path");
 
+var babelConfig = require("./.babelrc");
+
 var packageJson = require("./package.json");
 
 var SRC_ROOT = "./src";
@@ -23,7 +25,7 @@ var resourceRoot = packageJson.app.resource;
 
 var buildJs = ({ sourcemap }) => {
   // use to avoid an error cause whole gulp failed
-  var b = babel().on("error", e => {
+  var b = babel(babelConfig).on("error", e => {
     console.log(e.stack);
     b.end();
   });
