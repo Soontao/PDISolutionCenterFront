@@ -1,7 +1,6 @@
 import Control from "sap/ui/core/Control";
 import ReduxModel from "../store/redux/ReduxModel";
 import App from "sap/m/App";
-import { values, forEach } from "lodash";
 import { Path } from "./Path";
 import { registerReducer } from "../store/Store";
 import { Constants } from "../constants/Constants";
@@ -21,13 +20,19 @@ export const createRouter = (config: RouterConfig, store: ReduxModel) => {
 
   const homePage = config.defaultRouteValue || "/";
 
+  const messageManager = sap.ui.getCore().getMessageManager();
+
   const app: App = <App
-    pages={values(config.routes).map(r => r.content.setModel(store))}
+    pages={Object.values(config.routes).map(({ content }) => {
+      content.setModel(store);
+      messageManager.registerObject(content, true);
+      return content;
+    })}
     autoFocus={false}
     defaultTransitionName="show"
   />;
 
-  forEach(config.routes, (route, name) => {
+  Object.entries(config.routes).forEach(([name, route]) => {
 
     const pattern = route.pattern || `#/${name}`;
 
@@ -38,6 +43,7 @@ export const createRouter = (config: RouterConfig, store: ReduxModel) => {
     });
 
   });
+
 
   Path.root(homePage);
 

@@ -35,7 +35,7 @@ var buildJs = ({ sourcemap }) => {
   }
   rt = rt.pipe(b);
   if (sourcemap) {
-    rt = rt.pipe(sourcemaps.write("/sourcemap"));
+    rt = rt.pipe(sourcemaps.write({ sourceRoot: "/sourcemaps" }));
   }
   return rt;
 };
