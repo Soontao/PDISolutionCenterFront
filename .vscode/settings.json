@@ -16,5 +16,6 @@
         "thirdparty",
         "unfetch",
         "uxap"
-    ]
+    ],
+    "jest.autoEnable": false
 }

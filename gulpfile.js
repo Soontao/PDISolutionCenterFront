@@ -65,7 +65,7 @@ var copy = ({ preload = false, offline = false }) => {
         bootScriptPath: "./index.js",
         ui5ResourceRoot: resourceRoot,
         preload,
-        offline: true,
+        offline,
         sourceDir: join(__dirname, "./src"),
         thirdpartyLibPath: "_thirdparty",
         projectNameSpace: namespace,
@@ -129,6 +129,21 @@ gulp.task("bs", () => {
   });
 });
 
+gulp.task("bs:silent", () => {
+  var middlewares = require("./proxies");
+  browserSync.init({
+    server: {
+      baseDir: DEST_ROOT,
+      middleware: middlewares
+    },
+    open: false,
+    reloadDelay: 1 * 1000,
+    reloadDebounce: 1 * 1000,
+    notify: false,
+    startPath: "/"
+  });
+});
+
 // run gulp lint to auto fix src directory
 gulp.task("lint", () => {
   return gulp
@@ -169,3 +184,5 @@ gulp.task("copy", copy);
 gulp.task("dev", gulp.series("clean", "build:debug", gulp.parallel("bs", "watch:debug")));
 
 gulp.task("dev:preload", gulp.series("clean", "build:preload", gulp.parallel("bs", "watch:preload")));
+
+gulp.task("dev:silent", gulp.series("clean", "build:preload", gulp.parallel("bs:silent", "watch:preload")));

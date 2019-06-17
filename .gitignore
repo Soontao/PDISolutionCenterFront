@@ -63,3 +63,5 @@ dist.zip
 # yarn
 
 *yarn*
+
+.DS_Store

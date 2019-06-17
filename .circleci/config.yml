@@ -18,7 +18,7 @@ jobs:
           - v1-dependencies-
 
       - run: npm install
-
+      - run: npm test
       - run: npm run build
       - run: zip -r dist.zip dist/
 
