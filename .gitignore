@@ -65,3 +65,6 @@ dist.zip
 *yarn*
 
 .DS_Store
+
+# output
+integration/output/*.html
