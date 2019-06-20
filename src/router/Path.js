@@ -1,6 +1,8 @@
 // library from https://github.com/mtrpcic/pathjs
 // author mtrpcic <mike@mtrpcic.net>
 
+const innerHistory = [];
+
 export const Path = {
   'version': "0.8.4",
   'map': function(path) {
@@ -94,7 +96,7 @@ export const Path = {
       }
 
       if (matchedRoute !== null) {
-        matchedRoute.run();
+        matchedRoute.run(passedRoute);
         return true;
       } else if (Path.routes.rescue !== null) {
         Path.routes.rescue();
@@ -169,7 +171,27 @@ Path.core.Route.prototype = {
     }
     return options;
   },
-  'run': function() {
+  'run': function(nextPath) {
+
+    var isBack = false;
+
+    if (innerHistory.length > 1) {
+      var currentPath = innerHistory.pop();
+      var previousPath = innerHistory.pop();
+      if (previousPath == nextPath) {
+        isBack = true;
+        innerHistory.push(nextPath);
+      } else {
+        isBack = false;
+        innerHistory.push(previousPath);
+        innerHistory.push(currentPath);
+        innerHistory.push(nextPath);
+      }
+
+    } else {
+      innerHistory.push(nextPath);
+    }
+
     var haltExecution = false, i, result;
 
     if (Path.routes.defined[this.path].hasOwnProperty("do_enter")) {
@@ -183,8 +205,10 @@ Path.core.Route.prototype = {
         }
       }
     }
+
     if (!haltExecution) {
-      Path.routes.defined[this.path].action(this.params);
+      Path.routes.defined[this.path].action({ ...this.params, isBack });
     }
+
   }
 };

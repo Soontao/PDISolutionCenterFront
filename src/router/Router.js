@@ -5,7 +5,6 @@ import { Path } from "./Path";
 import { registerReducer } from "../store/Store";
 import { Constants } from "../constants/Constants";
 
-
 export interface RouterConfig {
   defaultRouteValue?: string;
   routes: {
@@ -29,7 +28,6 @@ export const createRouter = (config: RouterConfig, store: ReduxModel) => {
       return content;
     })}
     autoFocus={false}
-    defaultTransitionName="show"
   />;
 
   Object.entries(config.routes).forEach(([name, route]) => {
@@ -37,9 +35,12 @@ export const createRouter = (config: RouterConfig, store: ReduxModel) => {
     const pattern = route.pattern || `#/${name}`;
 
     Path.map(pattern).to(param => {
-
-      app.to(route.content, "show", param);
-
+      if(param.isBack){
+        app.back();
+      } else {
+        const nextPage = route.content;
+        app.to(nextPage, "", param);
+      }
     });
 
   });
