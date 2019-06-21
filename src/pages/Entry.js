@@ -49,29 +49,24 @@ export const createApp = (store: ReduxModel) => {
     }
   });
 
-  app.addEventDelegate({
+  // show welcome message on app init
+  (async() => {
 
-    onAfterRendering: async() => {
-
-      try {
-        const { User } = await fetchCurrentUserInformation();
-        MessageToast.show(`Welcome u, ${User.Name}`);
-        dispatch({
-          type: Constants.Actions.Global.SetCurrentUser,
-          param: User
-        });
-      } catch (error) {
-        dispatch({
-          type: Constants.Actions.Global.Error,
-          param: error
-        });
-      }
-
-
-
+    try {
+      const { User } = await fetchCurrentUserInformation();
+      MessageToast.show(`Welcome u, ${User.Name}`);
+      dispatch({
+        type: Constants.Actions.Global.SetCurrentUser,
+        param: User
+      });
+    } catch (error) {
+      dispatch({
+        type: Constants.Actions.Global.Error,
+        param: error
+      });
     }
 
-  });
+  })();
 
   return start;
 

@@ -82,6 +82,7 @@ export const createTenantFormPopupDialog = () => {
     dialog.getBinding("visible").attachChange((e) => {
       const visible = e.getSource().getValue();
       if (visible) {
+
         dialog.open();
       } else {
         dialog.close();

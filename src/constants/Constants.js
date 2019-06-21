@@ -36,6 +36,15 @@ export const Constants = {
       OnRefresh: "TenantDetailPageOnRefresh",
       RefreshFinished: "TenantDetailPageRefreshFinished",
       SetTenantPageInfo: "TenantDetailPageSetTenantPageInfo"
+    },
+    ScheduleSetupPage: {
+      OpenForm: "ScheduleSetupPageOpenForm",
+      SetFormBusy: "ScheduleSetupPageBusy",
+      CloseForm: "ScheduleSetupPageCloseForm",
+      RefreshList: "ScheduleSetupPageRefreshList",
+      SetListData: "ScheduleSetupPageSetListData",
+      SetFormSelectTenants: "ScheduleSetupPageSetFormSelectTenants",
+      SetFormSelectSolutions: "ScheduleSetupPageSetFormSelectSolutions"
     }
   },
 

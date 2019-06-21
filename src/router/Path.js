@@ -54,6 +54,7 @@ export const Path = {
   },
   'match': function(path, parameterized) {
     var params = {}, route = null, possibleRoutes, slice, i, j, compare;
+
     for (route in Path.routes.defined) {
       if (route !== null && route !== undefined) {
         route = Path.routes.defined[route];

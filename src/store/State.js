@@ -74,6 +74,15 @@ export const InitializeState: InitializeStateType = {
     TenantFormVisible: false,
     RefreshNow: false
   },
+  ScheduleSetupPage: {
+    Form: {},
+    TenantsList: [],
+    SolutionsList: [],
+    RefreshNow: false,
+    Plans: [],
+    FormBusy: false,
+    FormVisible: false
+  },
   TenantDetailPage: {
     Busy: false,
     TenantInfo: {}
