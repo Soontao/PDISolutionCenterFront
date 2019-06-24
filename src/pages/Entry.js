@@ -31,7 +31,7 @@ export const createApp = (store: ReduxModel) => {
     }
   };
 
-  const { app, start } = createRouter(routerConfig, store);
+  const { start } = createRouter(routerConfig, store);
 
   registerReducer({
     type: Constants.Actions.Global.SetCurrentUser,
