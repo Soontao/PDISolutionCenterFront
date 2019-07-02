@@ -40,12 +40,32 @@ export interface Router {
   CurrentPage: string;
 }
 
+export interface Form {
+}
+
+export interface ScheduleSetupPage {
+  Form: Form;
+  TenantsList: any[];
+  TargetTenantsList: any[];
+  SolutionsList: any[];
+  RefreshNow: boolean;
+  Plans: any[];
+  FormBusy: boolean;
+  FormVisible: boolean;
+}
+export interface TenantDetailPage {
+  Busy: boolean;
+  TenantInfo: Form;
+}
+
 export interface InitializeStateType {
   _Router: Router;
   AppName: string;
   CurrentUser: CurrentUser;
   HomePage: HomePage;
   TenantSetupPage: TenantSetupPage;
+  ScheduleSetupPage: ScheduleSetupPage;
+  TenantDetailPage: TenantDetailPage;
 }
 
 export const InitializeState: InitializeStateType = {
@@ -77,6 +97,7 @@ export const InitializeState: InitializeStateType = {
   ScheduleSetupPage: {
     Form: {},
     TenantsList: [],
+    TargetTenantsList: [],
     SolutionsList: [],
     RefreshNow: false,
     Plans: [],

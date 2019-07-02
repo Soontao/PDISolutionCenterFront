@@ -44,7 +44,8 @@ export const Constants = {
       RefreshList: "ScheduleSetupPageRefreshList",
       SetListData: "ScheduleSetupPageSetListData",
       SetFormSelectTenants: "ScheduleSetupPageSetFormSelectTenants",
-      SetFormSelectSolutions: "ScheduleSetupPageSetFormSelectSolutions"
+      SetFormSelectSolutions: "ScheduleSetupPageSetFormSelectSolutions",
+      SetFormSelectTargetTenants: "ScheduleSetupPageSetFormSelectTargetTenants"
     }
   },
 
