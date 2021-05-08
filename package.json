@@ -20,7 +20,7 @@
     "precommit": "npm run build"
   },
   "dependencies": {
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "unfetch": "^4.1.0"
